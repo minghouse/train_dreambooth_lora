@@ -920,6 +920,7 @@ def main(args):
             args.pretrained_model_name_or_path,
             revision=args.revision,
             torch_dtype=weight_dtype,
+            safety_checker=None,
         )
         temp_pipeline.load_lora_weights(input_dir)
 
@@ -1244,6 +1245,7 @@ def main(args):
                     text_encoder=None if args.pre_compute_text_embeddings else accelerator.unwrap_model(text_encoder),
                     revision=args.revision,
                     torch_dtype=weight_dtype,
+                    safety_checker=None,
                 )
 
                 # We train on the simplified learning objective. If we were previously predicting a variance, we need the scheduler to ignore it
@@ -1311,7 +1313,7 @@ def main(args):
         # Final inference
         # Load previous pipeline
         pipeline = DiffusionPipeline.from_pretrained(
-            args.pretrained_model_name_or_path, revision=args.revision, torch_dtype=weight_dtype
+            args.pretrained_model_name_or_path, revision=args.revision, torch_dtype=weight_dtype, safety_checker= None
         )
 
         # We train on the simplified learning objective. If we were previously predicting a variance, we need the scheduler to ignore it
