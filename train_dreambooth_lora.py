@@ -870,7 +870,7 @@ def main(args):
                 )
         text_encoder_lora_layers = AttnProcsLayers(text_lora_attn_procs)
         temp_pipeline = StableDiffusionPipeline.from_pretrained(
-            args.pretrained_model_name_or_path, text_encoder=text_encoder
+            args.pretrained_model_name_or_path, text_encoder=text_encoder, safety_checker=None
         )
         temp_pipeline._modify_text_encoder(text_lora_attn_procs)
         text_encoder = temp_pipeline.text_encoder
