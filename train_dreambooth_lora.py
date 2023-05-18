@@ -529,10 +529,17 @@ class DreamBoothDataset(Dataset):
 
     def __getitem__(self, index):
         example = {}
-        instance_image = Image.open(self.instance_images_path[index % self.num_instance_images])
+        # instance_image = Image.open(self.instance_images_path[index % self.num_instance_images])
+        instance_image_path = self.instance_images_path[index % self.num_instance_images]
+        instance_image = Image.open(instance_image_path)
         if not instance_image.mode == "RGB":
             instance_image = instance_image.convert("RGB")
         example["instance_images"] = self.image_transforms(instance_image)
+
+        # 讀取對應的txt文件
+        txt_file_path = Path(instance_image_path).with_suffix('.txt')
+        with open(txt_file_path, 'r') as f:
+            self.instance_prompt = f.read()
 
         if self.encoder_hidden_states is not None:
             example["instance_prompt_ids"] = self.encoder_hidden_states
